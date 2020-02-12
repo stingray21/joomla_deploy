@@ -1,6 +1,7 @@
 <?php
 /**
  * Command-line extension installer. This file is meant to be copied into your Joomla! 3 site's cli directory.
+ * https://github.com/akeeba/vagrant/blob/master/assets/joomla/install-joomla-extension.php
  */
 
 // Define ourselves as a parent file
