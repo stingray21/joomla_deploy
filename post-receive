@@ -1,0 +1,26 @@
+#!/bin/sh
+
+# JOOMLA component git deploy
+# the script install-joomla-extension.php need to be added to the joomla cli directory
+
+USERNAME=""
+NAME=""
+COMPONENT="com_${NAME}"
+SITE=""
+BASEPATH="/www/htdocs/${USERNAME}"
+REPOPATH="${BASEPATH}/repos/${COMPONENT}.git"
+TEMPPATH="${BASEPATH}/temp"
+
+[[ -d $TEMPPATH ]] || mkdir $TEMPPATH
+[[ -d "${TEMPPATH}/${COMPONENT}" ]] || mkdir "${TEMPPATH}/${COMPONENT}"
+[[ -d "${TEMPPATH}/${COMPONENT}/Releases" ]] || mkdir "${TEMPPATH}/${COMPONENT}/Releases"
+
+git --work-tree="${TEMPPATH}/${COMPONENT}" --git-dir="${REPOPATH}" checkout -f
+
+rm "${TEMPPATH}/${COMPONENT}/Releases/${COMPONENT}.zip"
+cd "${TEMPPATH}/${COMPONENT}/Source/"
+zip -r "${TEMPPATH}/${COMPONENT}/Releases/${COMPONENT}.zip" "${COMPONENT}"
+cd -
+
+php "${BASEPATH}/${SITE}/cli/install-joomla-extension.php" --package="${TEMPPATH}/${COMPONENT}/Releases/${COMPONENT}.zip"
+
